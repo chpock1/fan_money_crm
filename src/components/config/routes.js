@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
 	{
-		 path: '/',
+		path: '/',
 		name: 'Home',
 		component: () => import('../FanIndex.vue')
 	}

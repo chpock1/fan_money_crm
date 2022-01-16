@@ -3,7 +3,7 @@
   "displayName": "crm",
   "version": "0.1.0",
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
-  "main": "index.js",
+  "main": "main.js",
   "keywords": [
     "ecosystem:cordova"
   ],
@@ -49,33 +49,6 @@
     },
     "platforms": [
       "android"
-    ]
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "@vue/standard"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {
-      "indent": ["error", "tab"]
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/__tests__/*.{j,t}s?(x)",
-          "**/tests/unit/**/*.spec.{j,t}s?(x)"
-        ],
-        "env": {
-          "mocha": true
-        }
-      }
     ]
   },
   "browserslist": [

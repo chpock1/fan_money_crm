@@ -1,3 +1,9 @@
 module.exports = {
-  outputDir: 'www'
+	outputDir: 'www',
+	devServer: {
+		overlay: {
+			warnings: true,
+			errors: true
+		}
+	}
 }
