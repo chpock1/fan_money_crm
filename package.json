@@ -16,8 +16,9 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "pug-plain-loader": "^1.1.0",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0",
+    "vue-router": "^4.0.12",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
@@ -62,7 +63,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {},
+    "rules": {
+      "indent": ["error", "tab"]
+    },
     "overrides": [
       {
         "files": [
