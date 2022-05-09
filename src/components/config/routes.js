@@ -3,7 +3,14 @@ const routes = [
 	{
 		path: '/',
 		name: 'Home',
-		component: () => import('../FanIndex.vue')
+		component: () => import('../index.vue'),
+		children: [
+			{
+				path: '/shops',
+				name: 'shops',
+				component: () => import('../shop.vue')
+			}
+		]
 	}
 ]
 const router = createRouter({
