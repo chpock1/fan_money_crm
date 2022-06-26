@@ -11,6 +11,7 @@ module.exports = {
 	},
 	parser: 'vue-eslint-parser',
 	rules: {
+		'vue/prop-name-casing': ["error", "snake_case"],
 		indent: ['error', 'tab'],
 	},
 	overrides: [

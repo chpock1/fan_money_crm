@@ -1,5 +1,5 @@
 <template lang="pug">
-nav.header
+//nav.header
 	img.header__logo(src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
 		alt="лого от гугла")
 	.header__content
@@ -49,25 +49,80 @@ nav.header
 							a(href="/company/id") мой кабинет
 						li
 							a(href="/exit") мой кабинет
-.container
+//.container
 	.main
-		.main__title
-			span Здравствуйте admin, куда сегодня поедем?
-			button.btn.floatBtn Новая поездка
-		hr
-		.main__content
-			.content__block
-				p Lorem ipsum dolor sit amet, consectetur
-			.content__block
-				p Lorem ipsum dolor sit amet, consectetur
-			.content__block
-				p Lorem ipsum dolor sit amet, consectetur
-			.content__block.content__bigBlock
-				p Баланс: 234234,00 p.
-				p Задолженность: 234234,00 p.
-				p Lorem ipsum dolor sit amet,
+test-scroll(:list="arr" @scrollBottom="scrollBottom" :id_component="'lol'")
+	template(v-slot:item="slotProps")
+		.item(:id="'item-' + slotProps.id")
+			h2 {{ slotProps.text }}
+		div(style="height: 100px") {{slotProps.id}} + {{slotProps.text}}
+
+
+
 </template>
+<script>
+import TestScroll from "@/components/testScroll";
+export default {
+	components: {TestScroll},
+	data() {
+		let arr = [];
+		for(let i =0;i< 1000;i++) {
+			arr.push({
+				id: i,
+				text: 'textText'+i,
+			})
+		};
+		return{
+			arr
+		}
+	},
+	methods: {
+		scrollBottom() {
+			let arr = [];
+			for(let i = this.arr.length; i < this.arr.length+50; i++) {
+				arr.push({
+					id: i,
+					text: 'textText'+i,
+				})
+			};
+			this.arr = this.arr.concat(arr)
+
+		}
+	},
+}
+</script>
 <style>
+h2 {
+	padding: 15px;
+}
+h2, p {
+	margin: 0;
+	max-width: 100%;
+	display: block;
+}
+.item {
+	overflow: hidden;
+	padding: 30px 0 5px 0;
+	border-bottom: 1px solid #ddd;
+	position: relative;
+}
+.overlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+	background-color: #ddd;
+	opacity: 1;
+}
+img, p, video {
+	display: block;
+	width: 100%;
+}
+.text-wrapper {
+	padding: 15px;
+}
+
+
 :root {
 	--header-height: 50px;
 	--dropdown-transition: all 200ms linear;
