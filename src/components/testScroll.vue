@@ -1,26 +1,26 @@
 <template lang="pug">
-.list-wrapper
-	.list
-		div(
+div(ref="listAreaVisibility")
+	div(
 			v-for="(chunk, index) in chunks"
 			:key="index"
 			v-observe-visibility="(e)=>changeObserve(e,index)"
 			:style="{height :( (chunk.height>0 && !show[index]) ? chunk.height+'px' : 'auto')}"
 			:class="'chunk_number' + index"
 			class="chunk")
-			div(v-if="show[index]")
-				div(v-for="(item, i) in chunk.items" class="list-item" :key="i")
-					slot.item-inner(name="item" :id="item.id" :text="item.text")
-		.lastBlock(ref="lastBlock")
+		div(v-if="show[index]")
+			div(v-for="(item, i) in chunk.items" class="list-item" :key="i")
+				slot.item-inner(name="item" :id="item.id" :text="item.text")
+	.lastBlock(ref="lastBlock"  style="min-height: 1px")
+		slot(name="lastBlock")
 </template>
 
 <script>
 export default {
 	name: "TestScroll",
 	props: {
-		count_visibility: { // количество отображаемых элементов
+		count_visibility: { // количество элементов в чанке
 			type: Number,
-			default: 100,
+			default: 25,
 		},
 		list: {//	список
 			type: Array,
@@ -28,10 +28,6 @@ export default {
 				return [];
 			},
 			required: true,
-		},
-		data_key: { // ключ для каждого элемента возможно нахуй не нужен
-			type: String,
-			default: 'index',
 		},
 		data_height: {// высота элемента, 0 или пустое занчение означают динамическую высоту
 			type: Number,
@@ -41,15 +37,11 @@ export default {
 			type: Number,
 			default: 50,
 		},
-		id_component: {
-			type: String,
-			required: true,
-		},
 	},
 	emits: ['scrollBottom'],
 	data() {
 		return{
-			show: [true,],
+			show: [],
 			observerEnd: null,
 			chunks: [],
 			lastChunk: 0,
@@ -64,7 +56,7 @@ export default {
 			let options = {
 				root: null, // родитель целевого элемента - область просмотра, если null или не указано стандартная видимость монитора
 				threshold: 0, // степень пересечения между целевым элементом и его корнем(процент видимого изображения, при котором начинается загрузка) (0 - 1)
-				rootMargin: '100px'// Отступы вокруг root
+				rootMargin: this.margin + 'px'// Отступы вокруг root
 			}
 			this.observerEnd = new IntersectionObserver(this.endCallback, options)
 			this.endTarget = this.$refs.lastBlock
@@ -92,14 +84,12 @@ export default {
 		},
 		changeObserve(entry, index) {
 			if(!entry && this.show[index]) {
-				console.log(document.querySelector('.chunk_number'+index).clientHeight)
 				this.chunks[index].height = document.querySelector('.chunk_number'+index).clientHeight;
 			}
 			this.show[index] = entry;
 		},
 		endCallback(entries) {
 			if (entries[0].intersectionRatio > 0) {
-				console.log(entries)
 				if(this.list.slice(this.lastChunk * this.count_visibility, (this.lastChunk + 1) * this.count_visibility).length) {
 					let newChunks = {...this.chunks}
 					newChunks = Object.keys(newChunks).map((key)=> { return newChunks[key] })
@@ -109,13 +99,17 @@ export default {
 					})
 					this.show.push(true)
 					this.chunks = newChunks
-					this.lastChunk++
 					this.$nextTick(()=> {
-			  		this.observerEnd.unobserve(this.endTarget)
-						this.observerEnd.observe(this.endTarget)
+						console.log(this.lastChunk)
 						const height =  document.querySelector('.chunk_number'+this.lastChunk).clientHeight;
 						this.chunks[this.chunks.length-1].height = height
+						this.lastChunk++
+						setTimeout(()=> {
+							this.observerEnd.unobserve(this.endTarget)
+							this.observerEnd.observe(this.endTarget)
+						},1000)
 					})
+
 				}
 			}
 		},
@@ -124,16 +118,6 @@ export default {
 </script>
 
 <style scoped>
-
-.list-wrapper {
-	margin: 0 auto;
-	max-width: 800px;
-	position: relative;
-}
-.list {
-	width: 100%;
-}
-
 .chunk {
 	width: 100%;
 }

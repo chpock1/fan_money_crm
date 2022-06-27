@@ -51,7 +51,22 @@ nav.header
 							a(href="/exit") мой кабинет
 //.container
 	.main
-test-scroll(:list="arr" @scrollBottom="scrollBottom" :id_component="'lol'" :data_height="193")
+br
+br
+br
+br
+input(type="checkbox" v-model="val")
+label Фиксированная высота блоков
+br
+br
+br
+test-scroll(v-if="val" :list="arr" @scrollBottom="scrollBottom" :key="val.toString()" :data_height="193")
+	template(v-slot:item="slotProps")
+		.lol
+			.item(:id="'item-' + slotProps.id")
+				h2 {{ slotProps.text }}
+			div(style="height: 100px") {{slotProps.id}} + {{slotProps.text}}
+test-scroll(v-else :list="arr" @scrollBottom="scrollBottom" :key="val.toString()" )
 	template(v-slot:item="slotProps")
 		.lol
 			.item(:id="'item-' + slotProps.id")
@@ -67,13 +82,14 @@ export default {
 	components: {TestScroll},
 	data() {
 		let arr = [];
-		for(let i =0;i< 1000;i++) {
+		for(let i =0;i< 5000;i++) {
 			arr.push({
 				id: i,
 				text: 'textText'+i,
 			})
 		};
 		return{
+			val: false,
 			arr
 		}
 	},
@@ -93,9 +109,6 @@ export default {
 }
 </script>
 <style>
-.lol:hover {
-		height: 300px;
-}
 h2 {
 	padding: 15px;
 }
@@ -104,11 +117,32 @@ h2, p {
 	max-width: 100%;
 	display: block;
 }
+.lol {
+	transition: all 0.5s ease;
+	animation: move 0.5s infinite linear;
+}
 .item {
+	transition: all 0.5s ease;
+	animation: move 0.5s infinite linear;
 	overflow: hidden;
 	padding: 30px 0 5px 0;
 	border-bottom: 1px solid #ddd;
 	position: relative;
+		width: 40%;
+}
+@keyframes move {
+	0% {
+		background: white;
+	  box-shadow: -13px 0 20px 20px rgb(100 100 100 / 80%);
+	}
+	50% {
+	  background: navajowhite;
+	  box-shadow: 0 20px 20px 20px rgb(100 100 100 / 80%);
+	}
+	100% {
+		background: antiquewhite;
+	  box-shadow: 13px -10px 20px 20px rgb(100 100 100 / 80%);
+	}
 }
 .overlay {
 	position: absolute;
