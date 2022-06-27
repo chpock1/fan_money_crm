@@ -1,5 +1,5 @@
 <template lang="pug">
-//nav.header
+nav.header
 	img.header__logo(src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
 		alt="лого от гугла")
 	.header__content
@@ -51,11 +51,12 @@
 							a(href="/exit") мой кабинет
 //.container
 	.main
-test-scroll(:list="arr" @scrollBottom="scrollBottom" :id_component="'lol'")
+test-scroll(:list="arr" @scrollBottom="scrollBottom" :id_component="'lol'" :data_height="193")
 	template(v-slot:item="slotProps")
-		.item(:id="'item-' + slotProps.id")
-			h2 {{ slotProps.text }}
-		div(style="height: 100px") {{slotProps.id}} + {{slotProps.text}}
+		.lol
+			.item(:id="'item-' + slotProps.id")
+				h2 {{ slotProps.text }}
+			div(style="height: 100px") {{slotProps.id}} + {{slotProps.text}}
 
 
 
@@ -92,6 +93,9 @@ export default {
 }
 </script>
 <style>
+.lol:hover {
+		height: 300px;
+}
 h2 {
 	padding: 15px;
 }
@@ -205,6 +209,7 @@ img, p, video {
 .header__logo{
 	height: calc(var(--header-height) - 10px);
 	margin: auto 0;
+		width: auto;
 }
 .header__content{
 	display: inline-flex;
